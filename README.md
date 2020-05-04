@@ -37,8 +37,12 @@ analog_emit_w and analog_symb: Optional. These are for a (somewhat untested) ver
 ## Understanding the Main Features
 
 ## To Do
-- [ ] The broader framework presented here can also flexibly incorporate continuous internal states with state-dependent dynamics.
-- [ ] Alternatively, states themselves may operate along multiple timescales that necessitate hierarchical models in which higher-order internal states modulate lower-order internal states, which in turn modulate the actions of the animal.
+### Implementation
+- [ ] So far the code was tested and compared with the results of the MATLAB code considering the default options. However, it must be tested and compared with the results of the MATLAB code running with the non-default options too in an immediate future.
+- [ ] Since the code was translated from MATLAB, it is not totally [pythonic](https://docs.python-guide.org/writing/style/), and this somewhat degrades its efficiency. So one major improvement would be re-writting the code in a more pythonic way.
+### Extension
+- [ ] The framework presented here can also be extended to include continuous internal states with state-dependent dynamics.
+- [ ] In principle, states themselves may operate along multiple timescales that necessitate hierarchical models in which higher-order internal states modulate lower-order internal states. The method presented here can also be extended to include this feature.
 
 ## References
 1) Calhoun, A. J., Pillow, J. W., & Murthy, M. (2019). Unsupervised identification of the internal states that shape natural behavior. Nature neuroscience, 22(12), 2040-2049.
