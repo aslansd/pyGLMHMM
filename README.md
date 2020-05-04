@@ -11,25 +11,30 @@ This GLM-HMM model has been developed in ([Calhoun et al., 2019](https://www.nat
 
 ### Instructions on using the pyGLMHMM:
 
-To train a GLM-HMM model, call the function HMMGLMtrain9. This function takes the following form:
+num_samples = 5
+num_states = 2
+num_emissions = 2
+num_feedbacks = 3
+num_filter_bins = 30
+num_steps = 1
+filter_offset = 1
 
-HMMGLMtrain9(symb, emit_w, trans_w, stim, analog_emit_w, analog_symb, outfilename, options)
+output_stim
+output_symb
+output_symb_analog
 
 For each trial, we assume the following things:
 
-The trial is of some length T
-There are N possible outputs of which only one is emitted per time point
-There are M possible states the model can enter
-There are K regressors that we are fitting
+The trial is of some length T.
+There are N possible outputs of which only one is emitted per time point.
+There are M possible states the model can enter.
+There are K regressors that we are fitting.
+
+stim: The stimulus at each time point that we are regressing against. Each cell represents a trial that matches up with the corresponding cell for the symb variable. This matrix should be of size {(number of regressors, number of time points)}, or {(K, T)}.
+
 symb: The output symbols that we are trying to fit. This variable should be a (set) of cells. Each cell represents a trial and contains a vector that is of length T. The elements of the vector should be an integer in the set 0, ..., N-1.
 
-emit_w: The initial weights that predict the emissions at each time point. This should be a matrix of size (number of states, number of emissions - 1, number of regressors) or (M, N-1, K)
-
-trans_w: The initial weights that predict the state transitions at each time point. This should be a matrix of size (number of states, number of states, number of regressors) or (M, M, K)
-
-stim: The stimulus at each time point that we are regressing against. Each cell represents a trial that matches up with the corresponding cell for the symb variable. This matrix should be of size {(number of regressors, number of time points)}, or {(K, T)}
-
-analog_emit_w and analog_symb: Optional. These are for a (somewhat untested) version with gaussian outputs. Use this at your own risk!
+symb_analog: Optional. These are for a (somewhat untested) version with gaussian outputs. Use this at your own risk!
 
 ## Main Features
 ![Schematic illustrating the GLM–HMM](https://github.com/aslansd/pyGLMHMM/blob/master/fig/GLM-HMM.jpg)
