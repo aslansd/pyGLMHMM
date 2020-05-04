@@ -722,9 +722,6 @@ class GLMHMMEstimator(BaseEstimator):
             output[ind]['tgd_lik'] = tgd_lik
             output[ind]['pgd_lik'] = pgd_lik
             output[ind]['loglik'] = loglik[1:ind + 1]
-
-            parameters_dict = self.get_params()
-            parameters_dict.pop('random_state')
     
             print('Log likelihood: ' + str(loglik[ind + 1]))
         
@@ -825,7 +822,7 @@ class GLMHMMEstimator(BaseEstimator):
 
         self.is_fitted_ = True
         
-        return output, parameters_dict        
+        return output        
  
     def predict(self, X):     
         """Estimate model parameters using X and predict the labels for X.
@@ -1113,5 +1110,5 @@ if __name__ == "__main__":
         output_stim.append(final_stim)
     
     estimator = GLMHMMEstimator(num_samples = num_samples, num_states = num_states, num_emissions = num_emissions, num_feedbacks = num_feedbacks, num_filter_bins = num_filter_bins, num_steps = num_steps, filter_offset = filter_offset)
-    output, parameters_dict = estimator.fit(output_stim, output_trace, [])
+    output = estimator.fit(output_stim, output_trace, [])
     estimator.predict(output_stim)
