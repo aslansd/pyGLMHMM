@@ -32,11 +32,13 @@ stim: The stimulus at each time point that we are regressing against. Each cell 
 analog_emit_w and analog_symb: Optional. These are for a (somewhat untested) version with gaussian outputs. Use this at your own risk!
 
 ## Main Features
-![Schematic illustrating the GLM–HMM for 17 sensory feedback cues, 4 output types of song, and 3 internal states \(Calhoun et al., 2019)](https://github.com/aslansd/pyGLMHMM/blob/master/fig/GLM-HMM.jpg)
+![Schematic illustrating the GLM–HMM](https://github.com/aslansd/pyGLMHMM/blob/master/fig/GLM-HMM.jpg)
 
 ## Understanding the Main Features
 
 ## To Do
+-[] The broader framework presented here can also flexibly incorporate continuous internal states with state-dependent dynamics.
+-[] Alternatively, states themselves may operate along multiple timescales that necessitate hierarchical models in which higher-order internal states modulate lower-order internal states, which in turn modulate the actions of the animal.
 
 ## References
 1) Calhoun, A. J., Pillow, J. W., & Murthy, M. (2019). Unsupervised identification of the internal states that shape natural behavior. Nature neuroscience, 22(12), 2040-2049.
