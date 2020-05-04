@@ -3,11 +3,11 @@
 ## What Is It?
 pyGLMHMM is the pure Python implementation of the GLM-HMM method of this [GitHub Page](https://github.com/murthylab/GLMHMM). It follows the general framework of a [scikit-learn estimator](https://scikit-learn.org/stable/developers/develop.html) while being faithful to the original implementation.
 
-The GLM-HMM model has been developed in ([Calhoun et al., 2019](https://www.nature.com/articles/s41593-019-0533-x)) as a method to infer internal states of an animal based on sensory environment and produced behavior. This technique makes use of a regression method, Generalized Linear Models ([GLMs](https://en.wikipedia.org/wiki/Generalized_linear_model)), that identify a ‘filter’ that describes how a given sensory cue is integrated over time and then combines with a hidden state model, Hidden Markov Models ([HMMs](https://en.wikipedia.org/wiki/Hidden_Markov_model)), to best predict the acoustic behaviors of the vinegar fly D. melanogaster. The GLM–HMM allows each state to have an associated multinomial GLM to describe the mapping from feedback cues to the probability of emitting a particular action (e.g. one type among a few types of a song). Each state also has a multinomial GLM that produces a mapping from feedback cues to the transition probabilities from the current state to the next state. This allows the probabilities to change from moment to moment in a manner that depends on the feedback that the fly receives and to determine which feedback cues affect the probabilities at each moment. This model was inspired by previous work that modeled neural activity ([Escola et al., 2011](https://www.mitpressjournals.org/doi/abs/10.1162/NECO_a_00118)), but instead used multinomial categorical outputs to account for the discrete nature of singing behavior.
+This GLM-HMM model has been developed in ([Calhoun et al., 2019](https://www.nature.com/articles/s41593-019-0533-x)) as a method to infer internal states of an animal based on sensory environment and produced behavior. This technique makes use of a regression method, Generalized Linear Models ([GLMs](https://en.wikipedia.org/wiki/Generalized_linear_model)), that identify a 'filter' that describes how a given sensory cue is integrated over time and then combines with a hidden state model, Hidden Markov Models ([HMMs](https://en.wikipedia.org/wiki/Hidden_Markov_model)), to best predict the acoustic behaviors of the vinegar fly D. melanogaster. The GLM–HMM allows each state to have an associated multinomial GLM to describe the mapping from feedback cues to the probability of emitting a particular type of song. Each state also has a multinomial GLM that produces a mapping from feedback cues to the transition probabilities from the current state to the next state. This allows the probabilities to change from moment to moment in a manner that depends on the sesory feedback that the fly receives and to determine which feedback cues affect the probabilities at each moment. This model was inspired by a previous work that modeled neural activity ([Escola et al., 2011](https://www.mitpressjournals.org/doi/abs/10.1162/NECO_a_00118)), but instead used multinomial categorical outputs to account for the discrete nature of singing behavior.
 
 ## Getting Started
 ### Installation
-'pip install pyGLMHMM'
+`pip install pyGLMHMM`
 
 ### Instructions on using the pyGLMHMM:
 
@@ -38,3 +38,5 @@ analog_emit_w and analog_symb: Optional. These are for a (somewhat untested) ver
 ## To Do
 
 ## References
+1) Calhoun, A. J., Pillow, J. W., & Murthy, M. (2019). Unsupervised identification of the internal states that shape natural behavior. Nature neuroscience, 22(12), 2040-2049.
+2) Escola, S., Fontanini, A., Katz, D., & Paninski, L. (2011). Hidden Markov models for the stimulus-response relationships of multistate neural systems. Neural computation, 23(5), 1071-1132.
