@@ -32,6 +32,7 @@ stim: The stimulus at each time point that we are regressing against. Each cell 
 analog_emit_w and analog_symb: Optional. These are for a (somewhat untested) version with gaussian outputs. Use this at your own risk!
 
 ## Main Features
+![Schematic illustrating the GLM–HMM for 17 sensory feedback cues, 4 output types of song, and 3 internal states \(Calhoun et al., 2019)](https://github.com/aslansd/pyGLMHMM/blob/master/fig/GLM-HMM.jpg)
 
 ## Understanding the Main Features
 
