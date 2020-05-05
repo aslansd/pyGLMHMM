@@ -27,24 +27,26 @@ from minimizeLBFGS import _minimize_LBFGS
 
 class GLMHMMEstimator(BaseEstimator):
     """ 
-    GLMHMMEstimator - Fits a combination of Multinomial Generalized Linear Model (GLM) and Hidden Markov Model (HMM) to behavioral data.
+    The pure Python implementation of the GLM-HMM model of "https://github.com/murthylab/GLMHMM" implemented in MATLAB. 
+    It follows the general framework of a scikit-learn estimator while being faithful to the original implementation.
     
-    Internal states shape stimulus responses and decision-making, but we lack methods to identify them. To address this gap, we
-    developed an unsupervised method to identify internal states from behavioral data and applied it to a dynamic social interaction.
-    During courtship, Drosophila melanogaster males pattern their songs using feedback cues from their partner. Our model
-    uncovers three latent states underlying this behavior and is able to predict moment-to-moment variation in song-patterning
-    decisions. These states correspond to different sensorimotor strategies, each of which is characterized by different mappings
-    from feedback cues to song modes. We show that a pair of neurons previously thought to be command neurons for song production
-    are sufficient to drive switching between states. Our results reveal how animals compose behavior from previously
-    unidentified internal states, which is a necessary step for quantitative descriptions of animal behavior that link environmental
-    cues, internal needs, neuronal activity and motor outputs.
-    
-    .. versionadded:: 1.0.0
+    This GLM-HMM model has been developed in (Calhoun et al., 2019) as a method to infer internal states of an animal based on sensory 
+    environment and produced behavior. This technique makes use of a regression method, Generalized Linear Models (GLMs), that identify 
+    a 'filter' that describes how a given sensory cue is integrated over time. Then, it combines it with a hidden state model, Hidden 
+    Markov Models (HMMs), to identify whether the behavior of an animal can be explained by some underlying state. The end goal of this 
+    GLM-HMM model is to best predict the acoustic behaviors of the vinegar fly D. melanogaster. The GLM–HMM model allows each state to 
+    have an associated multinomial GLM to describe the mapping from feedback cues to the probability of emitting a particular type of song. 
+    Each state also has a multinomial GLM that produces a mapping from feedback cues to the transition probabilities from the current state 
+    to the next state. This allows the probabilities to change from moment to moment in a manner that depends on the sensory feedback that 
+    the fly receives and to determine which feedback cues affect the probabilities at each moment. This model was inspired by a previous 
+    work that modeled neural activity (Escola et al., 2011), but instead uses multinomial categorical outputs to account for the discrete 
+    nature of singing behavior.
     
     Inputs
     ----------
-    stim (X) : The stimulus to be used for fitting. These should be in the form of (regressors, time) per trial in a list.
-    symb (y) : The emitted discrete symbols to be fitted. These should be numbers from 0...N-1 (N: the number of possible outputs, i.e. song types) per trial in a list.
+    stim (X) : The stimulus to be used for fitting. These should be in the form of a numpy array with size (regressors, time) per sample in a list.
+    symb (y) : The emitted discrete symbols to be fitted. These should be in the form of a numpy array with size (time) containing integer numbers from 0...N-1 
+               (N: the number of possible outputs, i.e. song types) per sample in a list.
     analog_symb (y_analog) : The emitted continuous symbols to be fitted (for future extension).
         
     Parameters
@@ -65,15 +67,15 @@ class GLMHMMEstimator(BaseEstimator):
     num_states : int, defaults to 2.
         The number of hidden states.
     num_emissions : int, defaults to 2.
-        The number of possible outputs, i.e. song types.
+        The number of possible emitted actions, i.e. song types.
     num_feedbacks : int, defaults to 3.
         The number of feedback cues.
     num_filter_bins : int, defaults to 30.
         The sampling frequency of feedback cues.
     num_steps : int, defaults to 1.
-        The number of steps in M-step of EM algorithm.
+        The number of steps in the M-step of EM algorithm.
     filter_offset : int, defaults to 1.
-        ...
+        The number of bias terms added to the feedback cues.
     init_loglik : float, defaults to -1e7.
         The initial log likelihood.
     smooth_lambda : float, defaults to 1.
@@ -103,7 +105,7 @@ class GLMHMMEstimator(BaseEstimator):
     fit_emissions : bool, defaults to True.
         True if emissions must be fitted, False otherwise.
     GLM_emissions : bool, defaults to True.
-        True if GLM must be performed on emission outputs, False otherwise.
+        True if GLM must be performed on emission symbols, False otherwise.
     GLM_transitions : bool, defaults to True.
         True if GLM must be performed on state transitions, False otherwise.
     evaluate : bool, defaults to False.
@@ -144,11 +146,11 @@ class GLMHMMEstimator(BaseEstimator):
     trans_w_init_ : array-like, shape (states, states, regressors)
         The initial transition filter matrix.
     symb_lik_ : array-like (list)
-        The likelihood of output symbols.
+        The likelihood of emitted symbols.
     analog_lik_ : array-like (list)
-        The likelihood of continuous output states (for future extension).
+        The likelihood of continuous emitted symbols (for future extension).
     trans_lik_ : array-like (list)
-        The likelihood of output states.
+        The likelihood of hidden states.
     regular_schedule_ : array-like
         The regularization schedule.
     regular_schedule_ind_ : int
@@ -162,8 +164,7 @@ class GLMHMMEstimator(BaseEstimator):
     is_fitted_ : bool
         True if the fitting has been already performed, False otherwise.
     n_iter_ : int
-        Number of step used by the best fit of inference to reach the
-        convergence.
+        Number of step used by the best fit of inference to reach the convergence.
             
     References
     ----------
@@ -254,17 +255,16 @@ class GLMHMMEstimator(BaseEstimator):
         
         Parameters
         ----------
-        X : array-like, shape (These should be in the form of (regressors, time) per trial in a list).
+        X : array-like, shape (These should be in the form of a numpy array with size (regressors, time) per sample in a list).
             The training input samples.
-        y : array-like, shape (These should be numbers from 0...N-1 (N: the number of possible outputs, i.e. song types) per trial in a list).
+        y : array-like, shape (These should be in the form of a numpy array with size (time) containing integer numbers from 0...N-1 (N: the number of possible outputs, i.e. song types) per sample in a list).
             The target values (class labels in classification).
         y_analog : array-like, ...
             ...
         
         Returns
         -------
-        self : object
-            Returns the output and parameters dictionaries.
+        output : an output dictionary which has the emission and transition matrices of all fitting iterations and also some other attributes of GLMHMMEstimator class.
         """
         
         self.random_state = check_random_state(self.random_state)
@@ -835,12 +835,12 @@ class GLMHMMEstimator(BaseEstimator):
         
         Parameters
         ----------
-        X : array-like, shape (These should be in the form of (regressors, time) per trial in a list).
+        X : array-like, shape (These should be in the form of a numpy array with size (regressors, time) per sample in a list).
             The training input samples.
         
         Returns
         -------
-        y : array-like, shape (These should be numbers from 0...N-1 (N: the number of possible outputs, i.e. song types) per trial in a list).
+        y : array-like, shape (These should be in the form of a numpy array with size (time) containing integer numbers from 0...N-1 (N: the number of possible outputs, i.e. song types) per sample in a list).
             The target values (class labels in classification).
         """
         
@@ -851,7 +851,7 @@ class GLMHMMEstimator(BaseEstimator):
         
         Parameters
         ----------
-        X : array-like, shape (These should be in the form of (regressors, time) per trial in a list).
+        X : array-like, shape (These should be in the form of a numpy array with size (regressors, time) per sample in a list).
             The training input samples.
         """
         
@@ -905,7 +905,7 @@ class GLMHMMEstimator(BaseEstimator):
         
         Parameters
         ----------
-        X : array-like, shape (These should be in the form of (regressors, time) per trial in a list).
+        X : array-like, shape (These should be in the form of a numpy array with size (regressors, time) per sample in a list).
             The training input samples.
         random_state : RandomState
             A random number generator instance.
