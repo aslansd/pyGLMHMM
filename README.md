@@ -63,4 +63,4 @@ The objective function is also converted to a torch neural network module throug
 ## References
 1. Calhoun, A. J., Pillow, J. W., & Murthy, M. (2019). Unsupervised identification of the internal states that shape natural behavior. Nature neuroscience, 22(12), 2040-2049.
 2. Escola, S., Fontanini, A., Katz, D., & Paninski, L. (2011). Hidden Markov models for the stimulus-response relationships of multistate neural systems. Neural computation, 23(5), 1071-1132.
-3. Schmidt, M. (2005). minFunc: Unconstrained Differentiable Multivariate Optimization in Matlab. Software available [here] (http://www.cs.ubc.ca/~schmidtm/Software/minFunc.html).
+3. Schmidt, M. (2005). minFunc: Unconstrained Differentiable Multivariate Optimization in Matlab. Software available [here](https://www.cs.ubc.ca/~schmidtm/Software/minFunc.html).
