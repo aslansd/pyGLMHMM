@@ -47,4 +47,4 @@ To find the emission and transition matrices of the GLM-HMM model, the [Expectat
 1. Calhoun, A. J., Pillow, J. W., & Murthy, M. (2019). Unsupervised identification of the internal states that shape natural behavior. Nature neuroscience, 22(12), 2040-2049.
 2. Escola, S., Fontanini, A., Katz, D., & Paninski, L. (2011). Hidden Markov models for the stimulus-response relationships of multistate neural systems. Neural computation, 23(5), 1071-1132.
 3. Schmidt, M. (2005). minFunc: Unconstrained Differentiable Multivariate Optimization in MATLAB. Software available [here](https://www.cs.ubc.ca/~schmidtm/Software/minFunc.html).
-4. Michael-Shi, H. J., Mudigere, D. (2018). A PyTorch implementation of L-BFGS. Software available [here](https://github.com/hjmshi/PyTorch-LBFGS)
+4. Michael-Shi, H. J., & Mudigere, D. (2018). A PyTorch implementation of L-BFGS. Software available [here](https://github.com/hjmshi/PyTorch-LBFGS)
