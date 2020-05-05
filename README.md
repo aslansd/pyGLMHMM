@@ -25,6 +25,14 @@ The main module is [`GLMHMM`](https://github.com/aslansd/pyGLMHMM/blob/master/sr
   - `X` (stim): A list with the length of the `num_samples`. Each element of the list is a two-dimensional numpy array with the size of ((`num_feedbacks` * `num_filter_bins` + `filter_offset`) * (number of time points)). They represent the filters of sensory feedback cues across time and they match up with the corresponding element of the `y` input.
   - `y` (symb): A list with the length of the `num_samples`.  Each element of the list is a one-dimensional numpy array with the size of ((number of time points)). They represent the emitted bahaviors or actions (like song types) by integer numbers across time and they match up with the corresponding element of the `X` input.
 
+Here is the sample code:
+
+```
+from pyGLMHMM.GLMHMM import GLMHMMEstimator
+estimator = GLMHMMEstimator(num_samples = num_samples, num_states = num_states, num_emissions = num_emissions, num_feedbacks = num_feedbacks, num_filter_bins = num_filter_bins, num_steps = num_steps, filter_offset = filter_offset)
+output = estimator.fit(X, y, [])
+```
+
 ## Main GLM-HMM Method
 ![Schematic illustrating the GLM–HMM](https://github.com/aslansd/pyGLMHMM/blob/master/fig/GLM-HMM.jpg)
 
