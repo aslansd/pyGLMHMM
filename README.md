@@ -18,7 +18,7 @@ The main module is [`GLMHMM`](https://github.com/aslansd/pyGLMHMM/blob/master/sr
   - `num_emissions`: the number of emitted behaviors or actions (like song types)
   - `num_feedbacks`: the number of sensory feedback cues
   - `num_filter_bins`: the number of bins to discretize the filters of sensory feedback cues
-  - `num_steps`: the number of steps taken in the maximization step of EM algorithm for calculating the emission matrix
+  - `num_steps`: the number of steps taken in the maximization step of the EM algorithm for calculating the emission matrix
   - `filter_offset`: the number of bias terms added to the sensory feedback cues
 
 - Second, the `GLMHMMEstimator.fit(X, y, [])` method must be run on the input data:
