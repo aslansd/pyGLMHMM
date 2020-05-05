@@ -911,10 +911,10 @@ class GLMHMMEstimator(BaseEstimator):
             A random number generator instance.
         """
         
-        self.emit_w_ = np.zeros((self.num_states, self.num_emissions - 1, self.num_filter_bins * self.num_feedbacks + 1))     # states x emissions-1 x filter bins
+        self.emit_w_ = np.zeros((self.num_states, self.num_emissions - 1, self.num_filter_bins * self.num_feedbacks + self.filter_offset))     # states x emissions-1 x filter bins
         self.analog_emit_w_ = np.array([])
         self.analog_emit_std_ = np.array([])
-        self.trans_w_ = np.zeros((self.num_states, self.num_states, self.num_filter_bins * self.num_feedbacks + 1))     # states x states x filter bins (diagonals are ignored!)
+        self.trans_w_ = np.zeros((self.num_states, self.num_states, self.num_filter_bins * self.num_feedbacks + self.filter_offset))     # states x states x filter bins (diagonals are ignored!)
                         
         for ss1 in range(0, self.num_states):
             for ff in range(0, self.num_feedbacks):           
@@ -1078,7 +1078,7 @@ if __name__ == "__main__":
     stim = []
     states = []
     output_stim = []
-    output_trace = []
+    output_symb = []
     
     for ns in range(0, num_samples):
         output = np.zeros((num_real_states, total_time))
@@ -1100,9 +1100,9 @@ if __name__ == "__main__":
         p3 = np.exp(np.matmul(stim[ns][:, :, 2].T, filt.T))
         states.append(p3 / (1 + p3) > 0.5)
     
-        output_trace.append(np.zeros(total_time))
+        output_symb.append(np.zeros(total_time))
         for ss in range(0, num_real_states):
-            output_trace[ns][states[ns] == ss] = output[ss][states[ns] == ss]
+            output_symb[ns][states[ns] == ss] = output[ss][states[ns] == ss]
     
         final_stim = np.append(stim[ns][:, :, 0], stim[ns][:, :, 1], axis = 0)
         final_stim = np.append(final_stim, stim[ns][:, :, 2], axis = 0)
@@ -1110,5 +1110,5 @@ if __name__ == "__main__":
         output_stim.append(final_stim)
     
     estimator = GLMHMMEstimator(num_samples = num_samples, num_states = num_states, num_emissions = num_emissions, num_feedbacks = num_feedbacks, num_filter_bins = num_filter_bins, num_steps = num_steps, filter_offset = filter_offset)
-    output = estimator.fit(output_stim, output_trace, [])
+    output = estimator.fit(output_stim, output_symb, [])
     estimator.predict(output_stim)
