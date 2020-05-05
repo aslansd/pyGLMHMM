@@ -27,9 +27,9 @@ The main module is [`GLMHMM`](https://github.com/aslansd/pyGLMHMM/blob/master/sr
 
 Here is the sample code:
 
-```
+```python
 from pyGLMHMM.GLMHMM import GLMHMMEstimator
-estimator = GLMHMMEstimator(num_samples = num_samples, num_states = num_states, num_emissions = num_emissions, num_feedbacks = num_feedbacks, num_filter_bins = num_filter_bins, num_steps = num_steps, filter_offset = filter_offset)
+estimator = GLMHMMEstimator(num_samples = 5, num_states = 2, num_emissions = 2, num_feedbacks = 3, num_filter_bins = 30, num_steps = 1, filter_offset = 1)
 output = estimator.fit(X, y, [])
 ```
 
