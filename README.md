@@ -22,7 +22,7 @@ The main module is [`GLMHMM`](https://github.com/aslansd/pyGLMHMM/blob/master/sr
   - `filter_offset`: the number of bias terms added to the sensory feedback cues
 
 - Second, the `fit(X, y, [])` method of `GLMHMMEstimator` class must be run on the input data:
-  - `X` (stim): A list with the length of `num_samples`. Each element of the list is a two-dimensional numpy array with the size of ((`num_feedbacks` * `num_filter_bins` + `filter_offset`) * (number of time points)). They represent the filters of sensory feedback cues across time and they match up with the corresponding elements of input `y`.
+  - `X` (stim): A list with the length of `num_samples`. Each element of the list is a two-dimensional numpy array with the size of ((`num_feedbacks` * `num_filter_bins` + `filter_offset`) * (number of time points)). They represent the filtered sensory feedback cues across time and they match up with the corresponding elements of input `y`.
   - `y` (symb): A list with the length of `num_samples`. Each element of the list is a one-dimensional numpy array with the size of ((number of time points)). They represent the emitted bahaviors or actions (like song types) by integer numbers across time and they match up with the corresponding elements of input `X`.
   
 - Third, the output of the `fit` method is a dictionary which has the emission and transition matrices of all fitting iterations and also some other attributes of `GLMHMMEstimator` class.
