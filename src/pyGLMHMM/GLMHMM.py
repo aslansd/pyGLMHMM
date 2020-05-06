@@ -57,25 +57,24 @@ class GLMHMMEstimator(BaseEstimator):
         If None, the random number generator is the RandomState instance used
         by `np.random`.
     tol : float, defaults to 1e-4.
-        The convergence threshold. EM iterations will stop when the
-        lower bound average gain on the likelihood (of the training data with
-        respect to the model) is below this threshold.
+        The convergence threshold. EM iterations will stop when the lower bound average gain on the likelihood 
+        (of the training data with respect to the model) is below this threshold.
     max_iter : int, defaults to 1000.
         The number of EM iterations to perform.
     num_samples : int, defaults to 1.
-        The number of samples.
+        The number of distinct samples in the input data
     num_states : int, defaults to 2.
-        The number of hidden states.
+        The number of hidden internal states
     num_emissions : int, defaults to 2.
-        The number of possible emitted actions, i.e. song types.
+        The number of emitted behaviors or actions (like song types)
     num_feedbacks : int, defaults to 3.
-        The number of feedback cues.
+        The number of sensory feedback cues.
     num_filter_bins : int, defaults to 30.
-        The sampling frequency of feedback cues.
+        The number of bins to discretize the filters of sensory feedback cues.
     num_steps : int, defaults to 1.
-        The number of steps in the M-step of EM algorithm.
+        The number of steps taken in the maximization step of the EM algorithm for calculating the emission matrix
     filter_offset : int, defaults to 1.
-        The number of bias terms added to the feedback cues.
+        The number of bias terms added to the sensory feedback cues.
     init_loglik : float, defaults to -1e7.
         The initial log likelihood.
     smooth_lambda : float, defaults to 1.
@@ -115,7 +114,7 @@ class GLMHMMEstimator(BaseEstimator):
     L2_smooth : bool, defaults to True.
         True if regularization must be performed, False otherwise.
     analog_flag : bool, defaults to False.
-        True if the analog version of the algorithm must be run, False otherwise.
+        True if the analog version of the model must be run, False otherwise.
     auto_anneal : bool, defaults to False.
         ...
     anneal_lambda : bool, defaults to False.
@@ -258,13 +257,13 @@ class GLMHMMEstimator(BaseEstimator):
         X : array-like, shape (These should be in the form of a numpy array with size (regressors, time) per sample in a list).
             The training input samples.
         y : array-like, shape (These should be in the form of a numpy array with size (time) containing integer numbers from 0...N-1 (N: the number of possible outputs, i.e. song types) per sample in a list).
-            The target values (class labels in classification).
+            The target values (Class labels in classification).
         y_analog : array-like, ...
             ...
         
         Returns
         -------
-        output : an output dictionary which has the emission and transition matrices of all fitting iterations and also some other attributes of GLMHMMEstimator class.
+        output : an output dictionary which has the emission and transition matrices of all EM iterations of the fit method and also some other attributes of GLMHMMEstimator class.
         """
         
         self.random_state = check_random_state(self.random_state)
@@ -841,7 +840,7 @@ class GLMHMMEstimator(BaseEstimator):
         Returns
         -------
         y : array-like, shape (These should be in the form of a numpy array with size (time) containing integer numbers from 0...N-1 (N: the number of possible outputs, i.e. song types) per sample in a list).
-            The target values (class labels in classification).
+            The target values (Class labels in classification).
         """
         
         pass
@@ -1090,6 +1089,12 @@ if __name__ == "__main__":
             stim_temp[i, 0:total_time, :] = stim_temp[0, i:(total_time + i), :]
         
         stim.append(stim_temp[:, 0:total_time, :] + np.random.randn(num_filter_bins, total_time, num_feedbacks) * noiseSD)
+        
+        final_stim = np.append(stim[ns][:, :, 0], stim[ns][:, :, 1], axis = 0)
+        final_stim = np.append(final_stim, stim[ns][:, :, 2], axis = 0)
+        final_stim = np.append(final_stim, np.ones((filter_offset, total_time)), axis = 0)
+        output_stim.append(final_stim)
+        
         filt = scipy.stats.gamma.pdf(np.linspace(0, num_filter_bins), a = tau)[0:num_filter_bins]
     
         p1 = np.exp(np.matmul(stim[ns][:, :, 0].T, filt.T) + np.matmul(stim[ns][:, :, 1].T, -filt.T))
@@ -1103,11 +1108,6 @@ if __name__ == "__main__":
         output_symb.append(np.zeros(total_time))
         for ss in range(0, num_real_states):
             output_symb[ns][states[ns] == ss] = output[ss][states[ns] == ss]
-    
-        final_stim = np.append(stim[ns][:, :, 0], stim[ns][:, :, 1], axis = 0)
-        final_stim = np.append(final_stim, stim[ns][:, :, 2], axis = 0)
-        final_stim = np.append(final_stim, np.ones((1, total_time)), axis = 0)
-        output_stim.append(final_stim)
     
     estimator = GLMHMMEstimator(num_samples = num_samples, num_states = num_states, num_emissions = num_emissions, num_feedbacks = num_feedbacks, num_filter_bins = num_filter_bins, num_steps = num_steps, filter_offset = filter_offset)
     output = estimator.fit(output_stim, output_symb, [])
