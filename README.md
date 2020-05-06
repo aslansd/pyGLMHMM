@@ -14,7 +14,7 @@ The main module is [`GLMHMM`](https://github.com/aslansd/pyGLMHMM/blob/master/sr
 
 - First, an instance of `GLMHMMEstimator` class must be generated with its different parameters. The most important ones are:
   - `num_samples`: the number of distinct samples in the input data
-  - `num_states`: the number of assumed internal states
+  - `num_states`: the number of hidden internal states
   - `num_emissions`: the number of emitted behaviors or actions (like song types)
   - `num_feedbacks`: the number of sensory feedback cues
   - `num_filter_bins`: the number of bins to discretize the filters of sensory feedback cues
