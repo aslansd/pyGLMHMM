@@ -23,11 +23,11 @@ with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name='pyGLMHMM',
-      version=find_version("src/glm_utils/__init__.py"),
+      version=find_version("src/pyGLMHMM/__init__.py"),
       description='pyGLMHMM',
       long_description=long_description,
       long_description_content_type="text/markdown",
-      url='http://github.com/janclemenslab/pyGLMHMM',
+      url='https://github.com/aslansd/pyGLMHMM',
       author='Aslan Satary Dizaji',
       author_email='a.satarydizaji@eni-g.de',
       license='MIT',
