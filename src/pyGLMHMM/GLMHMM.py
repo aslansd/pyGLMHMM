@@ -6,21 +6,21 @@ from sklearn.base import BaseEstimator
 from sklearn.exceptions import ConvergenceWarning
 from sklearn.utils.validation import check_random_state
 
-from GLMHMMSymbLik import _GLMHMM_symb_lik
-from GLMHMMAnalogLik import _GLMHMM_analog_lik
-from GLMHMMTransLik import _GLMHMM_trans_lik
-from computeTrialExpectation import _compute_trial_expectation
-from emitLearningFun import _emit_learning_fun
-from emitMultistepLearningFun import _emit_multistep_learning_fun
-from transLearningFun import _trans_learning_fun
-from emitLikelihood import _emit_likelihood
-from emitLearningStats import _emit_learning_stats
-from transLearningStats import _trans_learning_stats
-from weightedLSByState import _weighted_LS_by_state
-from collectWLSInfo import _collect_WLS_info
-from regularizationSchedule import _regularization_schedule
+from .GLMHMMSymbLik import _GLMHMM_symb_lik
+from .GLMHMMAnalogLik import _GLMHMM_analog_lik
+from .GLMHMMTransLik import _GLMHMM_trans_lik
+from .computeTrialExpectation import _compute_trial_expectation
+from .emitLearningFun import _emit_learning_fun
+from .emitMultistepLearningFun import _emit_multistep_learning_fun
+from .transLearningFun import _trans_learning_fun
+from .emitLikelihood import _emit_likelihood
+from .emitLearningStats import _emit_learning_stats
+from .transLearningStats import _trans_learning_stats
+from .weightedLSByState import _weighted_LS_by_state
+from .collectWLSInfo import _collect_WLS_info
+from .regularizationSchedule import _regularization_schedule
 
-from minimizeLBFGS import _minimize_LBFGS
+from .minimizeLBFGS import _minimize_LBFGS
 
 #import _emit_generate, _generate_next_step, _generate_posterior_nstep
 #import _fit_emission_filters, _fit_transition_filters, _fit_analog_filters, _HMMGLM_likelihoods, _w_corr, _fast_ASD_weighted_group
