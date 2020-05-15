@@ -1,6 +1,6 @@
 import torch
 import torch.optim
-from LBFGS import FullBatchLBFGS
+from .LBFGS import FullBatchLBFGS
 
 def _minimize_LBFGS(objective_function, x_initial, lr = 1, max_iter = 500, tol = 1e-5, line_search = 'Wolfe', interpolate = True, max_ls = 25, history_size = 100, out = True):
     
