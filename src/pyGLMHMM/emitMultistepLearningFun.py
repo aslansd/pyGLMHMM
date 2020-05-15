@@ -1,6 +1,6 @@
 import numpy as np
 
-from generatePosteriorNStep import _generate_posterior_nstep
+from .generatePosteriorNStep import _generate_posterior_nstep
 from numba import jit
 from scipy.sparse import spdiags
 from scipy.linalg import block_diag
