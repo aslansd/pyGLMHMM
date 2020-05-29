@@ -22,12 +22,16 @@ from .regularizationSchedule import _regularization_schedule
 
 from .minimizeLBFGS import _minimize_LBFGS
 
-#import _emit_generate, _generate_next_step, _generate_posterior_nstep
-#import _fit_emission_filters, _fit_transition_filters, _fit_analog_filters, _HMMGLM_likelihoods, _w_corr, _fast_ASD_weighted_group
+from .fitEmissionFilters import _fit_emission_filters
+from .fitTransitionFilters import _fit_transition_filters
+from .fitAnalogFilters import _fit_analog_filters
+from .HMMGLMLikelihoods import _HMMGLM_likelihoods
+from .waveletTransform import _w_corr
+from .fastASD import _fast_ASD_weighted_group
 
 class GLMHMMEstimator(BaseEstimator):
     """ 
-    The pure Python implementation of the GLM-HMM model of "https://github.com/murthylab/GLMHMM" implemented in MATLAB. 
+    A pure Python implementation of the GLM-HMM model of "https://github.com/murthylab/GLMHMM" implemented in MATLAB. 
     It follows the general framework of a scikit-learn estimator while being faithful to the original implementation.
     
     This GLM-HMM model has been developed in (Calhoun et al., 2019) as a method to infer internal states of an animal based on sensory 
@@ -47,11 +51,11 @@ class GLMHMMEstimator(BaseEstimator):
     stim (X) : The stimulus to be used for fitting. These should be in the form of a numpy array with size (regressors, time) per sample in a list.
     symb (y) : The emitted discrete symbols to be fitted. These should be in the form of a numpy array with size (time) containing integer numbers from 0...N-1 
                (N: the number of possible outputs, i.e. song types) per sample in a list.
-    analog_symb (y_analog) : The emitted continuous symbols to be fitted (for future extension).
+    analog_symb (y_analog) : The emitted continuous symbols to be fitted.
         
     Parameters
     ----------
-    random_state : int, RandomState instance or None, optional (default=None)
+    random_state : int, RandomState instance or None, optional (default = None)
         If int, random_state is the seed used by the random number generator;
         If RandomState instance, random_state is the random number generator;
         If None, the random number generator is the RandomState instance used
@@ -131,23 +135,23 @@ class GLMHMMEstimator(BaseEstimator):
     emit_w_ : array-like, shape (states, N - 1, regressors)
         The emission filter matrix.
     analog_emit_w_ : array-like, ...
-        The continuous emission filter (for future extension).
+        The continuous emission filter.
     analog_emit_std_ : array-like, ...
-        The continuous emission filter standard deviation (for future extension).
+        The continuous emission filter standard deviation.
     trans_w_ : array-like, shape (states, states, regressors)
         The transition filter matrix.
     emit_w_init_ : array-like, shape (states, N - 1, regressors)
         The initial emission filter matrix.
     analog_emit_w_init_ : array-like, ...
-        The initial continuous emission filter (for future extension).
+        The initial continuous emission filter.
     analog_emit_std_init : array-like, ...
-        The initial continuous emission filter standard deviation (for future extension).
+        The initial continuous emission filter standard deviation.
     trans_w_init_ : array-like, shape (states, states, regressors)
         The initial transition filter matrix.
     symb_lik_ : array-like (list)
         The likelihood of emitted symbols.
     analog_lik_ : array-like (list)
-        The likelihood of continuous emitted symbols (for future extension).
+        The likelihood of continuous emitted symbols.
     trans_lik_ : array-like (list)
         The likelihood of hidden states.
     regular_schedule_ : array-like
@@ -394,16 +398,16 @@ class GLMHMMEstimator(BaseEstimator):
                         if self.symb_exists == True:
                             # _fit_emission_filters should take into account the test_data_
                             # field...
-                            [new_emit_w_temp, pgd_lik, pgd_prob, pgd_prob2, pgd_prob3, pgd_prob4] = _fit_emission_filters(X, y, gamma, xi, self.emit_w_, self.get_params())
+                            [new_emit_w_temp, pgd_lik, pgd_prob, pgd_prob2, pgd_prob3, pgd_prob4] = _fit_emission_filters(X, y, gamma, xi, self.emit_w_, self.get_params(), self.train_data_)
                             new_emit_w.append(new_emit_w_temp)
                         else:
                             pgd_lik = 0
             
-                        [new_trans_w_temp, tgd_lik] = _fit_transition_filters(X, y, gamma, xi, self.trans_w_, self.get_params())
+                        [new_trans_w_temp, tgd_lik] = _fit_transition_filters(X, y, gamma, xi, self.trans_w_, self.get_params(), self.train_data_)
                         new_trans_w.append(new_trans_w_temp)
             
                         if self.analog_flag == True:
-                            [new_analog_emit_w_temp, new_analog_emit_std_temp, arcorr, arcorr2] = _fit_analog_filters(X, y_analog, self.analog_emit_w_, self.get_params())
+                            [new_analog_emit_w_temp, new_analog_emit_std_temp, arcorr, arcorr2] = _fit_analog_filters(X, y_analog, gamma, xi, self.analog_emit_w_, self.get_params(), self.train_data_)
                             new_analog_emit_w.append(new_analog_emit_w_temp)
                             new_analog_emit_std.append(new_analog_emit_std_temp)
                         
